@@ -1,7 +1,9 @@
-node_modules
-npm-debug.log
-.nyc_output
-coverage
-.vscode
+/.idea
+/.vscode
+/areas
+/coverage
+/dist
+/node_modules
 **/.DS_Store
-.zip
+*.zip
+npm-debug.log
