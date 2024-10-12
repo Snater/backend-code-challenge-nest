@@ -1,5 +1,5 @@
 import {ValidationOptions, registerDecorator} from 'class-validator';
-import Unit from '../types/Unit';
+import {UnitDto} from '../dto';
 
 export function IsUnit(validationOptions?: ValidationOptions) {
 	return function (object: Object, propertyName: string) {
@@ -9,8 +9,8 @@ export function IsUnit(validationOptions?: ValidationOptions) {
 			propertyName: propertyName,
 			options: validationOptions,
 			validator: {
-				validate(value: unknown): value is Unit {
-					return value === 'km' || value === 'mi';
+				validate(value: unknown): value is UnitDto {
+					return value === UnitDto.km || value === UnitDto.mi;
 				},
 			},
 		});

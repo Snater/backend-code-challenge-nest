@@ -1,7 +1,9 @@
-import Address from '../types/Address';
+import {AddressDto} from './AddressDto';
+import {ApiProperty} from '@nestjs/swagger';
 import {IsAddress} from '../validators';
 
 export class CitiesDto {
 	@IsAddress({each: true})
-	cities: Address[]
+	@ApiProperty({type: [AddressDto]})
+	cities: AddressDto[]
 }

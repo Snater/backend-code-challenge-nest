@@ -1,29 +1,41 @@
 import {IsAddress, IsUnit} from '../validators';
 import {IsNumber, IsUUID} from 'class-validator';
-import Address from '../types/Address';
-import Unit from '../types/Unit';
+import {AddressDto} from './AddressDto';
+import {ApiProperty} from '@nestjs/swagger';
+
+export enum UnitDto {
+	km = 'km',
+	mi = 'mi',
+}
 
 export class DistanceDto {
 	@IsNumber()
+	@ApiProperty({minimum: 0})
 	distance: number
 
 	@IsUnit()
-	unit: Unit
+	@ApiProperty({enum: UnitDto})
+	unit: UnitDto
 
 	@IsAddress()
-	from: Address
+	@ApiProperty()
+	from: AddressDto
 
 	@IsAddress()
-	to: Address
+	@ApiProperty()
+	to: AddressDto
 }
 
 export class DistanceQueryDto {
 	@IsUUID()
+	@ApiProperty({description: 'GUID'})
 	from: string
 
 	@IsUUID()
+	@ApiProperty({description: 'GUID'})
 	to: string
 
 	@IsUnit()
-	unit: Unit = 'km'
+	@ApiProperty({default: 'km', enum: UnitDto, required: false})
+	unit: UnitDto = UnitDto.km
 }

@@ -2,10 +2,8 @@ import * as fs from 'fs';
 import * as path from 'path';
 import * as spherical from 'spherical';
 import {Injectable, StreamableFile} from '@nestjs/common';
-import Address from './types/Address';
-import {CitiesDto, DistanceDto, QueryDto} from './dto';
+import {AddressDto, CitiesDto, DistanceDto, QueryDto, UnitDto} from './dto';
 import FileManager from './utils/FileManager';
-import Unit from './types/Unit';
 
 @Injectable()
 export class AppService {
@@ -18,13 +16,13 @@ export class AppService {
 		if (this.addresses.cities.length === 0) {
 			this.addresses.cities = JSON.parse(
 				fs.readFileSync(path.join(__dirname, '..', 'addresses.json'), 'utf8')
-			) as Address[];
+			) as AddressDto[];
 		}
 
 		return this.addresses;
 	}
 
-	calculateDistance(from: Address, to: Address, unit: Unit = 'km'): DistanceDto {
+	calculateDistance(from: AddressDto, to: AddressDto, unit: UnitDto = UnitDto.km): DistanceDto {
 		const distance = spherical.distance(
 			[from.longitude, from.latitude],
 			[to.longitude, to.latitude],
@@ -38,10 +36,10 @@ export class AppService {
 		return {distance: localDistance, unit, from, to};
 	}
 
-	findAddresses(...guids: string[]): (Address | undefined)[] {
-		const addresses: (Address | undefined)[] = [];
+	findAddresses(...guids: string[]): (AddressDto | undefined)[] {
+		const addresses: (AddressDto | undefined)[] = [];
 
-		this.getAddresses().cities.forEach((address: Address) => {
+		this.getAddresses().cities.forEach((address: AddressDto) => {
 			guids.forEach((guid, key) => {
 				if (guid === address.guid) {
 					addresses[key] = address;
@@ -54,16 +52,16 @@ export class AppService {
 		return addresses;
 	}
 
-	findAddressesWithinDistance(from: string, distance: number): Address[] {
+	findAddressesWithinDistance(from: string, distance: number): AddressDto[] {
 		const addresses = this.getAddresses().cities;
 
-		const addressFrom = addresses.find((address: Address) => {
+		const addressFrom = addresses.find((address: AddressDto) => {
 			return address.guid === from;
 		});
 
 		return addressFrom === undefined
 			? []
-			: addresses.filter((address: Address) => {
+			: addresses.filter((address: AddressDto) => {
 				const addressDistance = spherical.distance(
 					[addressFrom.longitude, addressFrom.latitude],
 					[address.longitude, address.latitude],
@@ -75,7 +73,7 @@ export class AppService {
 	}
 
 	queryAddresses(query: QueryDto): CitiesDto {
-		const addresses = this.getAddresses().cities.filter((address: Address) => {
+		const addresses = this.getAddresses().cities.filter((address: AddressDto) => {
 			if (query.guid && query.guid !== address.guid) {
 				return false;
 			}

@@ -1,5 +1,5 @@
 import {ValidationOptions, registerDecorator} from 'class-validator';
-import Address from '../types/Address';
+import {AddressDto} from '../dto';
 
 export function IsAddress(validationOptions?: ValidationOptions) {
 	return function (object: Object, propertyName: string) {
@@ -9,7 +9,7 @@ export function IsAddress(validationOptions?: ValidationOptions) {
 			propertyName: propertyName,
 			options: validationOptions,
 			validator: {
-				validate(value: unknown): value is Address {
+				validate(value: unknown): value is AddressDto {
 					return (
 						value !== null
 						&& typeof value === 'object'

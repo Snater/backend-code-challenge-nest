@@ -10,6 +10,10 @@ I am not affiliated with GAN Integrity, I have never received a response from th
 2. Start the NestJS server, i.e. per `npm run start:server`.
 3. In a separate terminal, run the challenge script `npm start`.
 
+## Swagger
+
+Swagger is set up and can be accessed on http://localhost:8080/api/ once running the server. Use the `SECRET` from the `.env` to authorize.
+
 ## Tests
 
 In addition to the solution, some basic tests are implemented. They may be executed per `npm test` and `npm run test:e2e`.
